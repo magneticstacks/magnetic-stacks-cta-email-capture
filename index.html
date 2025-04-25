@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -502,6 +503,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -512,9 +514,11 @@
             0% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-10px);
             }
+
             100% {
                 transform: translateY(0px);
             }
@@ -525,10 +529,12 @@
                 opacity: 0.6;
                 transform: scale(0.95);
             }
+
             50% {
                 opacity: 1;
                 transform: scale(1.05);
             }
+
             100% {
                 opacity: 0.6;
                 transform: scale(0.95);
@@ -540,44 +546,46 @@
             .unified-content {
                 flex-direction: column-reverse;
             }
-            
-            .book-section, .content-section {
+
+            .book-section,
+            .content-section {
                 width: 100%;
             }
-            
+
             .book-section {
                 padding: 2rem;
             }
-            
+
             .content-section {
                 padding: 2rem;
                 text-align: center;
             }
-            
+
             .feature {
                 justify-content: center;
             }
-            
+
             h1 {
                 font-size: 2.5rem;
             }
-            
+
             h2 {
                 font-size: 1.5rem;
             }
-            
+
             .testimonial {
                 padding-left: 0;
                 border-left: none;
                 text-align: center;
             }
-            
+
             .ratings {
                 justify-content: center;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="background"></div>
     <div class="landing-page">
@@ -586,7 +594,8 @@
                 <div class="book-section">
                     <div class="book-glow"></div>
                     <div class="book-container">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ebook0092-WJxLEYC2ypJGkDqs4P1DWp8qIEvNED.png" alt="Passive Income Ebook" class="ebook-image">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ebook0092-WJxLEYC2ypJGkDqs4P1DWp8qIEvNED.png"
+                            alt="Passive Income Ebook" class="ebook-image">
                     </div>
                 </div>
                 <div class="content-section">
@@ -608,7 +617,7 @@
                             <div class="text">No technical experience required</div>
                         </div>
                     </div>
-                    
+
                     <div class="social-proof">
                         <div class="ratings">
                             <div class="stars">
@@ -621,11 +630,12 @@
                             <div class="count">4.9/5 (352 reviews)</div>
                         </div>
                         <div class="testimonial">
-                            "This ebook completely changed my approach to passive income. I'm now making $2,000 extra each month with just a few hours of work per week."
+                            "This ebook completely changed my approach to passive income. I'm now making $2,000 extra
+                            each month with just a few hours of work per week."
                             <div class="author">— Michael T.</div>
                         </div>
                     </div>
-                    
+
                     <div class="countdown">
                         <div class="countdown-title">Limited Time Offer Ends In:</div>
                         <div class="countdown-timer" id="countdown">
@@ -647,7 +657,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <button id="cta-button" class="cta-button">GET YOUR FREE EBOOK NOW</button>
                 </div>
             </div>
@@ -678,39 +688,47 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctaButton = document.getElementById('cta-button');
-        const overlay = document.getElementById('overlay');
-        const closeBtn = document.getElementById('close-btn');
-        const emailForm = document.getElementById('email-form');
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctaButton = document.getElementById('cta-button');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const emailForm = document.getElementById('email-form');
 
-        // Open the overlay when CTA button is clicked
-        ctaButton.addEventListener('click', function () {
-            overlay.classList.add('active');
-        });
+            // Open the overlay when CTA button is clicked
+            ctaButton.addEventListener('click', function () {
+                overlay.classList.add('active');
+            });
 
-        // Close the overlay when the close button is clicked
-        closeBtn.addEventListener('click', function () {
-            overlay.classList.remove('active');
-        });
-
-        // Close the overlay when clicking outside the form
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
+            // Close the overlay when the close button is clicked
+            closeBtn.addEventListener('click', function () {
                 overlay.classList.remove('active');
-            }
-        });
+            });
 
-        // Handle form submission
-        emailForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            // Close the overlay when clicking outside the form
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            // Handle form submission
+            emailForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
 
-            console.log('Form submitted with:', { name, email });
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
 
-            emailForm.innerHTML = `
+                console.log('Form submitted with:', { name, email });
+
+                try {
+                    const response = await fetch("/.netlify/functions/addToBrevo", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, email })
+                    });
+
+                    if (response.ok) {
+                        emailForm.innerHTML = `
                 <div class="success-message">
                     <div class="success-icon"><i class="fas fa-check-circle"></i></div>
                     <h3>Thank you, ${name}!</h3>
@@ -718,206 +736,182 @@
                     <p>Please check your inbox (and spam folder) in the next few minutes.</p>
                 </div>
             `;
+                        setTimeout(() => overlay.classList.remove("active"), 5000);
+                    } else {
+                        const errorText = await response.text();
+                        console.error('Error submitting to Brevo:', errorText);
+                        alert("Something went wrong. Please try again.");
+                    }
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    alert("An unexpected error occurred. Please try again later.");
+                }
+            });
 
-            setTimeout(function () {
-                overlay.classList.remove('active');
-            }, 5000);
-        });
+            // Countdown Timer
+            const countdownElements = {
+                days: document.getElementById('days'),
+                hours: document.getElementById('hours'),
+                minutes: document.getElementById('minutes'),
+                seconds: document.getElementById('seconds')
+            };
 
-        // Countdown Timer
-        const countdownElements = {
-            days: document.getElementById('days'),
-            hours: document.getElementById('hours'),
-            minutes: document.getElementById('minutes'),
-            seconds: document.getElementById('seconds')
-        };
-
-        function startCountdown(durationHours) {
-            let endTime = localStorage.getItem('countdownEndTime');
-            if (!endTime) {
-                const now = new Date();
-                now.setHours(now.getHours() + durationHours);
-                endTime = now.toISOString();
-                localStorage.setItem('countdownEndTime', endTime);
-            }
-
-            endTime = new Date(endTime);
-
-            function updateCountdown() {
-                const now = new Date();
-                const diff = endTime - now;
-
-                if (diff <= 0) {
-                    countdownElements.days.textContent = "00";
-                    countdownElements.hours.textContent = "00";
-                    countdownElements.minutes.textContent = "00";
-                    countdownElements.seconds.textContent = "00";
-                    return;
+            function startCountdown(durationHours) {
+                let endTime = localStorage.getItem('countdownEndTime');
+                if (!endTime) {
+                    const now = new Date();
+                    now.setHours(now.getHours() + durationHours);
+                    endTime = now.toISOString();
+                    localStorage.setItem('countdownEndTime', endTime);
                 }
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                endTime = new Date(endTime);
 
-                countdownElements.days.textContent = days.toString().padStart(2, '0');
-                countdownElements.hours.textContent = hours.toString().padStart(2, '0');
-                countdownElements.minutes.textContent = minutes.toString().padStart(2, '0');
-                countdownElements.seconds.textContent = seconds.toString().padStart(2, '0');
+                function updateCountdown() {
+                    const now = new Date();
+                    const diff = endTime - now;
+
+                    if (diff <= 0) {
+                        countdownElements.days.textContent = "00";
+                        countdownElements.hours.textContent = "00";
+                        countdownElements.minutes.textContent = "00";
+                        countdownElements.seconds.textContent = "00";
+                        return;
+                    }
+
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    countdownElements.days.textContent = days.toString().padStart(2, '0');
+                    countdownElements.hours.textContent = hours.toString().padStart(2, '0');
+                    countdownElements.minutes.textContent = minutes.toString().padStart(2, '0');
+                    countdownElements.seconds.textContent = seconds.toString().padStart(2, '0');
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
             }
 
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        }
-
-        startCountdown(20); // Start countdown from 20 hours
-    });
-    </script>
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
-<!-- form submission -->
-<script>
-    emailForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-    
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-    
-        console.log('Form submitted with:', { name, email });
-    
-        const response = await fetch("/.netlify/functions/addToBrevo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email })
+            startCountdown(20); // Start countdown from 20 hours
         });
-    
-        if (response.ok) {
-            emailForm.innerHTML = `
-                <div class="success-message">
-                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-                    <h3>Thank you, ${name}!</h3>
-                    <p>Your free ebook has been sent to ${email}</p>
-                    <p>Please check your inbox (and spam folder) in the next few minutes.</p>
-                </div>
-            `;
-            setTimeout(() => overlay.classList.remove("active"), 5000);
-        } else {
-            const err = await response.text();
-            alert("Something went wrong: " + err);
-        }
-    });
     </script>
+    <!-- Code injected by live-server -->
+    <script>
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+            (function () {
+                function refreshCSS() {
+                    var sheets = [].slice.call(document.getElementsByTagName("link"));
+                    var head = document.getElementsByTagName("head")[0];
+                    for (var i = 0; i < sheets.length; ++i) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                        }
+                        parent.appendChild(elem);
+                    }
+                }
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathname + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function (msg) {
+                    if (msg.data == 'reload') window.location.reload();
+                    else if (msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                }
+            })();
+        }
+        else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+        // ]]>
+    </script>
+    <!-- Code injected by live-server -->
+    <script>
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+            (function () {
+                function refreshCSS() {
+                    var sheets = [].slice.call(document.getElementsByTagName("link"));
+                    var head = document.getElementsByTagName("head")[0];
+                    for (var i = 0; i < sheets.length; ++i) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                        }
+                        parent.appendChild(elem);
+                    }
+                }
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathname + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function (msg) {
+                    if (msg.data == 'reload') window.location.reload();
+                    else if (msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                }
+            })();
+        }
+        else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+        // ]]>
+    </script>
+    <!-- Code injected by live-server -->
+    <script>
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+            (function () {
+                function refreshCSS() {
+                    var sheets = [].slice.call(document.getElementsByTagName("link"));
+                    var head = document.getElementsByTagName("head")[0];
+                    for (var i = 0; i < sheets.length; ++i) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                        }
+                        parent.appendChild(elem);
+                    }
+                }
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathname + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function (msg) {
+                    if (msg.data == 'reload') window.location.reload();
+                    else if (msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                }
+            })();
+        }
+        else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+        // ]]>
+    </script>
+
 </body>
+
 </html>
