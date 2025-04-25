@@ -887,5 +887,37 @@
 	}
 	// ]]>
 </script>
+<!-- form submission -->
+<script>
+    emailForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+    
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+    
+        console.log('Form submitted with:', { name, email });
+    
+        const response = await fetch("/.netlify/functions/addToBrevo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email })
+        });
+    
+        if (response.ok) {
+            emailForm.innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Thank you, ${name}!</h3>
+                    <p>Your free ebook has been sent to ${email}</p>
+                    <p>Please check your inbox (and spam folder) in the next few minutes.</p>
+                </div>
+            `;
+            setTimeout(() => overlay.classList.remove("active"), 5000);
+        } else {
+            const err = await response.text();
+            alert("Something went wrong: " + err);
+        }
+    });
+    </script>
 </body>
 </html>
