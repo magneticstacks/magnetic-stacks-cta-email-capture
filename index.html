@@ -668,8 +668,10 @@
     <div id="overlay" class="overlay">
         <div class="form-container">
             <div class="form-header">
-                <h2>Almost there!</h2>
-                <p>Enter your details below to get instant access to your FREE ebook</p>
+                <div data-form-header-box>
+                    <h2>Almost there!</h2>
+                    <p>Enter your details below to get instant access to your FREE ebook</p>
+                </div>
                 <span class="close-btn" id="close-btn">&times;</span>
             </div>
             <form id="email-form">
@@ -728,6 +730,8 @@
                     });
 
                     if (response.ok) {
+                        document.querySelector('[data-form-header-box]').style.display = 'none';
+
                         emailForm.innerHTML = `
                 <div class="success-message">
                     <div class="success-icon"><i class="fas fa-check-circle"></i></div>
