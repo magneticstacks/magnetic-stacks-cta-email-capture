@@ -729,7 +729,7 @@
                         body: JSON.stringify({ name, email })
                     });
 
-                    if (!response.ok) {
+                    if (response.ok) {
                         document.querySelector('[data-form-header-box]').style.display = 'none';
 
                         emailForm.innerHTML = `
